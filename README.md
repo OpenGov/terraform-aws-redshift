@@ -69,6 +69,9 @@ module "redshift" {
 | require\_ssl | Require SSL to connect to this cluster | string | `"false"` | no |
 | skip\_final\_snapshot | If true (default), no snapshot will be made before deleting DB | string | `"true"` | no |
 | snapshot_identifier | (Optional) The name of the snapshot from which to create the new cluster. | string | `""` | no |
+| snapshot\_copy\_destination\_region | (Optional) The name of the region where the snapshot will be copied. | string | `""` | no |
+| snapshot\_copy\_grant\_name | (Optional) The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region. | string | `""` | no |
+| snapshot\_copy\_retention\_period | (Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region. | string | `"0"` | no |
 | snapshot_cluster_identifier | (Optional) The name of the cluster the source snapshot was created from. | string | `""` | no |
 | subnets | List of subnets DB should be available at. It might be one subnet. | list | `[]` | no |
 | tags | A mapping of tags to assign to all resources | map | `{}` | no |
@@ -100,6 +103,7 @@ module "redshift" {
 | this\_redshift\_cluster\_version | The version of Redshift engine software |
 | this\_redshift\_cluster\_vpc\_security\_group\_ids | The VPC security group ids associated with the cluster |
 | this\_redshift\_parameter\_group\_id | The ID of Redshift parameter group created by this module |
+| this\_redshift\_snapshot\_copy\_grant\_arn | The ARN of Redshift snapshot copy grant created by this module |
 | this\_redshift\_subnet\_group\_id | The ID of Redshift subnet group created by this module |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

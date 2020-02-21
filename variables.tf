@@ -125,8 +125,28 @@ variable "snapshot_identifier" {
   default     = ""
 }
 
+variable "snapshot_owner_account" {
+  description = "(Optional) The AWS customer account used to create or copy the snapshot. Required if you are restoring a snapshot you do not own, optional if you own the snapshot."
+  default     = ""
+}
+
 variable "snapshot_cluster_identifier" {
   description = "(Optional) The name of the cluster the source snapshot was created from."
+  default     = ""
+}
+
+variable "snapshot_copy_destination_region" {
+  description = "(Optional) The name of the region where the snapshot will be copied."
+  default     = ""
+}
+
+variable "snapshot_copy_retention_period" {
+  description = "(Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region."
+  default     = 0
+}
+
+variable "snapshot_copy_grant_name" {
+  description = "(Optional) The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region."
   default     = ""
 }
 
@@ -151,7 +171,7 @@ variable "encrypted" {
 }
 
 variable "kms_key_id" {
-  description = "(Optional) The ARN for the KMS encryption key. When specifying kms_key_id, encrypted needs to be set to true."
+  description = "(Optional) The ARN for the KMS encryption key. When specifying kms_key_id, encrypted needs to be set to true. This will also be used for the snapshot copy grant if enabled."
   default     = ""
 }
 
