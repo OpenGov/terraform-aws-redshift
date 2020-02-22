@@ -8,6 +8,9 @@ These types of resources are supported:
 * [Redshift parameter group](https://www.terraform.io/docs/providers/aws/r/redshift_parameter_group.html)
 * [Redshift subnet group](https://www.terraform.io/docs/providers/aws/r/redshift_subnet_group.html)
 
+**Note**: This is the OpenGov fork that enforces and requires that snapshot copies be copied to another region.
+Unfortunately, due to the restrictions of Terraform 11, we can not make this module turn on / off.
+
 ## Usage
 
 ```hcl
@@ -30,6 +33,11 @@ module "redshift" {
 
   # IAM Roles
   cluster_iam_roles = ["arn:aws:iam::225367859851:role/developer"]
+
+  # For cross region snapshot copy (required)
+  snapshot_copy_destination_region    = "us-west-2"
+  snapshot_copy_retention_period      = "3"
+  snapshot_copy_grant_name            = "redshift-snapshot-copy-grant-for-us-west-2"
 }
 ```
 
@@ -69,9 +77,9 @@ module "redshift" {
 | require\_ssl | Require SSL to connect to this cluster | string | `"false"` | no |
 | skip\_final\_snapshot | If true (default), no snapshot will be made before deleting DB | string | `"true"` | no |
 | snapshot_identifier | (Optional) The name of the snapshot from which to create the new cluster. | string | `""` | no |
-| snapshot\_copy\_destination\_region | (Optional) The name of the region where the snapshot will be copied. | string | `""` | no |
-| snapshot\_copy\_grant\_name | (Optional) The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region. | string | `""` | no |
-| snapshot\_copy\_retention\_period | (Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region. | string | `"0"` | no |
+| snapshot\_copy\_destination\_region | The name of the region where the snapshot will be copied. | string | n/a | yes |
+| snapshot\_copy\_grant\_name | The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region. | string | n/a | yes |
+| snapshot\_copy\_retention\_period | (Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region | string | `"1"` | no |
 | snapshot_cluster_identifier | (Optional) The name of the cluster the source snapshot was created from. | string | `""` | no |
 | subnets | List of subnets DB should be available at. It might be one subnet. | list | `[]` | no |
 | tags | A mapping of tags to assign to all resources | map | `{}` | no |

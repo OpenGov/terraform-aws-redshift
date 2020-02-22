@@ -1,11 +1,11 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+<a name="v1.7.0"></a>
+## [v1.99.0] - 2020-20-20
 - Add tags to `aws_redshift_parameter_group`
 - Add missing `owner_account` for restoring from snaphot shared from a different AWS account
-- Add support for creating cross region snapshot copies
-- Add support creating snapshot copy grant
-
+- Enforce cross region snapshot copies
 
 <a name="v1.7.0"></a>
 ## [v1.7.0] - 2019-06-12

@@ -4,9 +4,6 @@ locals {
 
   # if we were passed a value for parameter_group_name, we'll use that instead of creating a parameter group name
   parameter_group_name = "${coalesce(var.parameter_group_name, element(concat(aws_redshift_parameter_group.this.*.id, list("")), 0))}"
-
-  # if we were passed a value for snapshot_copy_grant_name, we'll use that instead of creating a parameter group name
-  snapshot_copy_grant_name = "${coalesce(var.snapshot_copy_grant_name, element(concat(aws_redshift_snapshot_copy_grant.this.*.id, list("")), 0))}"
 }
 
 resource "aws_redshift_cluster" "this" {
@@ -57,11 +54,10 @@ resource "aws_redshift_cluster" "this" {
     s3_key_prefix = "${var.logging_s3_key_prefix}"
   }
 
-  # Snapshot copying
   snapshot_copy {
     destination_region = "${var.snapshot_copy_destination_region}"
     retention_period   = "${var.snapshot_copy_retention_period}"
-    grant_name         = "${local.snapshot_copy_grant_name}"
+    grant_name         = "${var.snapshot_copy_grant_name}"
   }
 
   tags = "${var.tags}"
@@ -109,16 +105,6 @@ resource "aws_redshift_subnet_group" "this" {
   name        = "${var.cluster_identifier}"
   description = "Redshift subnet group of ${var.cluster_identifier}"
   subnet_ids  = ["${var.subnets}"]
-
-  tags = "${var.tags}"
-}
-
-resource "aws_redshift_snapshot_copy_grant" "this" {
-  # if we passed a value for snapshot_copy_grant_name, don't bother creating a snapshot grant
-  count = "${length(var.snapshot_copy_grant_name) > 0 ? 0 : 1}"
-
-  snapshot_copy_grant_name = "${var.cluster_identifier}-snapshot-grant"
-  kms_key_id               = "${var.kms_key_id}"
 
   tags = "${var.tags}"
 }

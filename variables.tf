@@ -136,18 +136,16 @@ variable "snapshot_cluster_identifier" {
 }
 
 variable "snapshot_copy_destination_region" {
-  description = "(Optional) The name of the region where the snapshot will be copied."
-  default     = ""
-}
-
-variable "snapshot_copy_retention_period" {
-  description = "(Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region."
-  default     = 0
+  description = "The name of the region where the snapshot will be copied."
 }
 
 variable "snapshot_copy_grant_name" {
-  description = "(Optional) The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region."
-  default     = ""
+  description = "The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region."
+}
+
+variable "snapshot_copy_retention_period" {
+  description = "(Optional) The number of days to retain automated snapshots in the destination region after they are copied from the source region"
+  default     = 1
 }
 
 variable "use_fips_ssl" {
