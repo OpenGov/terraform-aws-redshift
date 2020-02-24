@@ -26,8 +26,9 @@ resource "aws_redshift_cluster" "this" {
   publicly_accessible = "${var.publicly_accessible}"
 
   # Restore from snapshot
-  snapshot_identifier                 = "${var.snapshot_identifier}"
-  snapshot_cluster_identifier         = "${var.snapshot_cluster_identifier}"
+  snapshot_identifier         = "${var.snapshot_identifier}"
+  snapshot_cluster_identifier = "${var.snapshot_cluster_identifier}"
+  owner_account               = "${var.owner_account}"
 
   # Snapshots and backups
   final_snapshot_identifier           = "${var.final_snapshot_identifier}"
@@ -51,6 +52,12 @@ resource "aws_redshift_cluster" "this" {
     enable        = "${var.enable_logging}"
     bucket_name   = "${var.logging_bucket_name}"
     s3_key_prefix = "${var.logging_s3_key_prefix}"
+  }
+
+  snapshot_copy {
+    destination_region = "${var.snapshot_copy_destination_region}"
+    retention_period   = "${var.snapshot_copy_retention_period}"
+    grant_name         = "${var.snapshot_copy_grant_name}"
   }
 
   tags = "${var.tags}"
@@ -87,6 +94,8 @@ resource "aws_redshift_parameter_group" "this" {
     name  = "enable_user_activity_logging"
     value = "${var.enable_user_activity_logging}"
   }
+
+  tags = "${var.tags}"
 }
 
 resource "aws_redshift_subnet_group" "this" {
